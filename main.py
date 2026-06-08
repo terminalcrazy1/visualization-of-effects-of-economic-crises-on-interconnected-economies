@@ -1,25 +1,13 @@
-from random import randint
 from PyQt6.QtWidgets import (
     QApplication,
     QGraphicsScene,
     QGraphicsView,
-    QGraphicsEllipseItem,
     QGridLayout,
     QVBoxLayout,
     QWidget
 )
-from PyQt6.QtGui import QBrush
-from PyQt6.QtCore import Qt
 
 app = QApplication([])
-
-class ClickableScene(QGraphicsScene):
-    def __init__(self):
-        super().__init__()
-
-    def mousePressEvent(self, event):
-        super().mousePressEvent(event)
-
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -27,15 +15,16 @@ class MainWindow(QWidget):
         self.setWindowTitle("The Earth Is Flat")
         self.setFixedSize(800, 450)
 
-        scene = ClickableScene()
+        scene = QGraphicsScene(0, 0, 500, 420)
 
         """
         column width (125px)
         row width (105px)
         = grid size 750px * 420px
         """
+
         view = QGraphicsView(scene)
-        
+
         layout = QGridLayout()
         self.setLayout(layout)
 
