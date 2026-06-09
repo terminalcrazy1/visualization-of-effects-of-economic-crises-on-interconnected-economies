@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 
 app = QApplication([])
+origin = 0
 
 def onMiddleClick(event):
     for pt in window.pts:
@@ -20,7 +21,11 @@ def onMiddleClick(event):
             return
 
 def onRightClick(event):
-    pass
+        ct = 0
+        for pt in window.pts:
+            ct += 1
+            if abs(pt.coords[0] - event.scenePos().x()) < 10 and abs(pt.coords[1] - event.scenePos().y()) < 10:
+                return ct - 1
 
 def onLeftClick(event, last_point, scene):
     if last_point != None:
@@ -67,12 +72,13 @@ class ClickableScene(QGraphicsScene):
         self.last_point = None
     
     def mousePressEvent(self, event):
+        global origin
         if event.button() == Qt.MouseButton.LeftButton:
             self.last_point = onLeftClick(event, self.last_point, self)
         elif event.button() == Qt.MouseButton.MiddleButton:
             onMiddleClick(event)
         elif event.button() == Qt.MouseButton.RightButton:
-            onRightClick(event)
+            origin = onRightClick(event)
 
 class MainWindow(QWidget):
     pts: list[GridPoint] = []
@@ -92,8 +98,7 @@ class MainWindow(QWidget):
         self.addDots(scene)
 
     def releaseWave(self):
-        # self.pts[randint(0, len(self.pts)-1)].addLoad(randint(10, 50)) 
-        self.pts[0].addLoad(50)
+        self.pts[origin].addLoad(randint(10, 50)) 
 
     def __init__(self):
         super().__init__()
