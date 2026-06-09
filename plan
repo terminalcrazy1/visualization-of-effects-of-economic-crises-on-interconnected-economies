@@ -4,10 +4,10 @@ generate dots (distributed evenly across scene) -- done
 
 on wave release
 
-r add force to impact dot
+r add force to impact dot -- done
 r remove force from impact dot = to # of connections * reducer ratio
-r add force = to reducer ratio of impact to each connected dot
-r propagate
+r add force = to reducer ratio of impact to each connected dot -- done
+r propagate -- done
 
 c turn overloaded dots red
 c remove overloaded dots
