@@ -63,9 +63,11 @@ class GridPoint():
                 link.addLoad(load * 0.15, previous + [self])
                 ct += 1
         self.load += load * (1 - 0.15 * ct)
-        if self.load > 100:
+        if self.load >= 100:
+            for link in self.links:
+                if link.load < 100:
+                    link.addLoad(100 - link.load, self.links + [self])
             self.visual.setBrush(Qt.GlobalColor.red)
-
 
 class ClickableScene(QGraphicsScene):
     def __init__(self, *args):
@@ -100,7 +102,7 @@ class MainWindow(QWidget):
         self.addDots(scene)
 
     def releaseWave(self):
-        self.pts[origin].addLoad(randint(10, 50)) 
+        self.pts[origin].addLoad(50) 
 
     def __init__(self):
         super().__init__()
