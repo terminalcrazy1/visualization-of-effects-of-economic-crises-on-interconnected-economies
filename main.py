@@ -93,8 +93,8 @@ class MainWindow(QWidget):
         self.addDots(scene)
 
     def releaseWave(self):
-        # self.pts[randint(0, len(self.pts)-1)].addLoad(randint(100, 500), None) 
-        self.pts[0].addLoad(200)
+        # self.pts[randint(0, len(self.pts)-1)].addLoad(randint(10, 50)) 
+        self.pts[0].addLoad(50)
 
     def __init__(self):
         super().__init__()
