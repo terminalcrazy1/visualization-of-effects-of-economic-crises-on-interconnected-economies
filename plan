@@ -9,8 +9,7 @@ r remove force from impact dot = to # of connections * reducer ratio
 r add force = to reducer ratio of impact to each connected dot -- done
 r propagate -- done
 
-c turn overloaded dots red
-c remove overloaded dots
+c turn overloaded dots red -- done
 
 ui
 
@@ -18,7 +17,7 @@ c wave strength slider
 r release wave button
 r reset button
 
-r clicking two dots creates a link between them
-r middle click gives info on dot clicked
+r clicking two dots creates a link between them -- done
+r middle click gives info on dot clicked -- almost
 
 c right click to place wave epicenter

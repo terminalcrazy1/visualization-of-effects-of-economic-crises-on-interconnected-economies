@@ -1,4 +1,3 @@
-from time import sleep
 from random import randint
 from PyQt6.QtWidgets import (
     QApplication,
