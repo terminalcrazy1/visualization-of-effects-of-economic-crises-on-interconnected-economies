@@ -69,8 +69,6 @@ class MainWindow(QWidget):
         stack_layout.addWidget(reset_button)
         stack_layout.addStretch() # top align widgets
 
-
-
 window = MainWindow()
 window.show()
 
