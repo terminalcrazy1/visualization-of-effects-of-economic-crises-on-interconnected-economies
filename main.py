@@ -11,6 +11,15 @@ from PyQt6.QtWidgets import (
 
 app = QApplication([])
 
+def onMiddleClick(event):
+    pass
+
+def onRightClick(event):
+    pass
+
+def onLeftClick(event):
+    pass
+
 class ClickableScene(QGraphicsScene):
     def init(self, args):
         super().__init__(args)
