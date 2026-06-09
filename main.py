@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 
 class GridPoint:
+    previous = []
+
     def __init__(self, coords: tuple[int, int], visual):
         self.coords = coords
         self.load = 0
@@ -15,18 +17,19 @@ class GridPoint:
     def addLink(self, link: 'GridPoint'):
         self.links.append(link)
     
-    def addLoad(self, load: int, previous=None):
-        if previous is None: previous = []
+    def addLoad(self, load: int):
         ct = 0
         for link in self.links:
-            if link not in previous:
-                link.addLoad(load * 0.15, previous + [self])
+            if link not in self.previous:
+                self.previous.append(link)
+                link.addLoad(load * 0.15)
                 ct += 1
         self.load += load * (1 - 0.15 * ct)
         if self.load >= 100:
+            self.load = 100
             for link in self.links:
                 if link.load < 100:
-                    link.addLoad(100 - link.load, self.links + [self])
+                    link.addLoad(100 - link.load)
             self.visual.setBrush(Qt.GlobalColor.red)
 
 class ClickableScene(QGraphicsScene):
@@ -111,6 +114,7 @@ class MainWindow(QWidget):
         self.addDots(scene)
 
     def releaseWave(self):
+        self.pts[self.origin].previous = []
         self.pts[self.origin].addLoad(50) 
 
 app = QApplication([])
