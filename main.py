@@ -1,3 +1,4 @@
+from time import sleep
 from random import randint
 from PyQt6.QtWidgets import (
     QApplication,
@@ -12,7 +13,7 @@ from PyQt6.QtWidgets import (
 app = QApplication([])
 
 def onMiddleClick(event):
-    pass
+    event.scenePos()
 
 def onRightClick(event):
     pass
@@ -20,28 +21,56 @@ def onRightClick(event):
 def onLeftClick(event):
     pass
 
+class GridPoint():
+    load: int = 0
+    coords: tuple[int] = ()
+    links: list[GridPoint] = []
+
+    def init(self, constructed_coords: tuple[int]):
+        self.coords = constructed_coords
+
+    def addLink(self, link: GridPoint):
+        self.links.append(link)
+    
+    def addLoad(self, load: int):
+        self.load += load
+        for link in self.links:
+            link.addLoad(load * 0.15)
+
+
 class ClickableScene(QGraphicsScene):
     def init(self, args):
         super().__init__(args)
     
     def mousePressEvent(self, event):
-        print(str(event.scenePos()))
+        for pt in window.pts:
+            if abs(pt.coords[0] - event.scenePos().x()) < 10 and abs(pt.coords[1] - event.scenePos().y()) < 10:
+                print("Clicked on point at " + str(pt.coords) + " with load " + str(pt.load) + " and " + str(len(pt.links)) + " links")
+                return
     
 
 class MainWindow(QWidget):
+
+    pts: list[GridPoint] = []
+
     def addDots(self, scene: QGraphicsScene):
         for x in range(1,12):
             for y in range(1,10):
                 xmod = x * 40 + randint(-10,10)
                 ymod = y * 40 + randint(-10,10)
                 scene.addEllipse(xmod, ymod, 10, 10)
+                pt = GridPoint()
+                pt.init((xmod, ymod))
+                self.pts.append(pt)
+                
     
     def resetScene(self, scene: QGraphicsScene):
         scene.clear()
+        self.pts = []
         self.addDots(scene)
 
     def releaseWave(self):
-        pass
+        self.pts[randint(0, len(self.pts)-1)].addLoad(randint(100, 500))
 
     def __init__(self):
         super().__init__()
@@ -49,7 +78,6 @@ class MainWindow(QWidget):
         self.setFixedSize(800, 450)
 
         scene = ClickableScene(0, 0, 500, 420)
-        self.addDots(scene)
 
         """
         column width (125px)
