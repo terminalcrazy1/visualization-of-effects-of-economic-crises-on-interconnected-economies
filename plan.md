@@ -4,15 +4,21 @@ generate dots (distributed evenly across scene) -- done
 
 on wave release
 
-add force to impact dot
-remove force from impact dot = to # of connections * reducer ratio
-add force = to reducer ratio of impact to each connected dot
-propagate
-turn overloaded dots red
-remove overloaded dots
+r add force to impact dot
+r remove force from impact dot = to # of connections * reducer ratio
+r add force = to reducer ratio of impact to each connected dot
+r propagate
+
+c turn overloaded dots red
+c remove overloaded dots
 
 ui
 
-wave strength slider
-release wave button (right click to place epicenter?)
-reset button
+c wave strength slider
+r release wave button
+r reset button
+
+r clicking two dots creates a link between them
+r middle click gives info on dot clicked
+
+c right click to place wave epicenter
