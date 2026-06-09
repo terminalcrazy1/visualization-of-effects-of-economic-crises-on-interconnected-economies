@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (
 app = QApplication([])
 
 def onMiddleClick(event):
-    event.scenePos()
+    pass
 
 def onRightClick(event):
     pass
