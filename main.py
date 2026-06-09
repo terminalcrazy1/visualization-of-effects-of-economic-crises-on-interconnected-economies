@@ -12,7 +12,6 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 
 app = QApplication([])
-last_point = (-10, -10)
 
 def onMiddleClick(event):
     for pt in window.pts:
@@ -24,9 +23,8 @@ def onMiddleClick(event):
 def onRightClick(event):
     pass
 
-def onLeftClick(event):
-    global last_point
-    if last_point != (-10, -10):
+def onLeftClick(event, last_point):
+    if last_point != None:
         for pt in window.pts:
             if abs(pt.coords[0] - last_point[0]) < 10 and abs(pt.coords[1] - last_point[1]) < 10:
                 for pt2 in window.pts:
@@ -34,12 +32,13 @@ def onLeftClick(event):
                         pt.addLink(pt2)
                         pt2.addLink(pt)
                         print("Linked " + str(pt.coords) + " to " + str(pt2.coords))
-                        last_point = (-10, -10)
+                        last_point = None
                         break
                 break
     else:
         last_point = (event.scenePos().x(), event.scenePos().y())
-        print("last_point set")
+        print("Last point set to " + str(last_point))
+    return last_point
 
 class GridPoint():
     def __init__(self, coords: tuple[int, int]):
@@ -59,10 +58,11 @@ class GridPoint():
 class ClickableScene(QGraphicsScene):
     def __init__(self, *args):
         super().__init__(*args)
+        self.last_point = None
     
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            onLeftClick(event)
+            self.last_point = onLeftClick(event, self.last_point)
         elif event.button() == Qt.MouseButton.MiddleButton:
             onMiddleClick(event)
         elif event.button() == Qt.MouseButton.RightButton:
