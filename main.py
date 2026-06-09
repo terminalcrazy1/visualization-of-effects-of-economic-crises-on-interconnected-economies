@@ -9,60 +9,76 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QWidget
 )
+from PyQt6.QtCore import Qt
 
 app = QApplication([])
+last_point = (-10, -10)
 
 def onMiddleClick(event):
-    pass
+    for pt in window.pts:
+        if abs(pt.coords[0] - event.scenePos().x()) < 10 and abs(pt.coords[1] - event.scenePos().y()) < 10:
+            print("Clicked on point at " + str(pt.coords) + " with load " + str(pt.load) + " and " + str(len(pt.links)) + " links")
+            print(pt.links)
+            return
 
 def onRightClick(event):
     pass
 
 def onLeftClick(event):
-    pass
+    global last_point
+    if last_point != (-10, -10):
+        for pt in window.pts:
+            if abs(pt.coords[0] - last_point[0]) < 10 and abs(pt.coords[1] - last_point[1]) < 10:
+                for pt2 in window.pts:
+                    if abs(pt2.coords[0] - event.scenePos().x()) < 10 and abs(pt2.coords[1] - event.scenePos().y()) < 10:
+                        pt.addLink(pt2)
+                        pt2.addLink(pt)
+                        print("Linked " + str(pt.coords) + " to " + str(pt2.coords))
+                        last_point = (-10, -10)
+                        break
+                break
+    else:
+        last_point = (event.scenePos().x(), event.scenePos().y())
+        print("last_point set")
 
 class GridPoint():
-    load: int = 0
-    coords: tuple[int] = ()
-    links: list[GridPoint] = []
+    def __init__(self, coords: tuple[int, int]):
+        self.coords = coords
+        self.load = 0
+        self.links = []
 
-    def init(self, constructed_coords: tuple[int]):
-        self.coords = constructed_coords
-
-    def addLink(self, link: GridPoint):
+    def addLink(self, link: 'GridPoint'):
         self.links.append(link)
     
-    def addLoad(self, load: int):
+    def addLoad(self, load: int, previous = []):
         self.load += load
         for link in self.links:
-            link.addLoad(load * 0.15)
-
+            if link not in previous:
+                link.addLoad(load * 0.15, previous + [self])
 
 class ClickableScene(QGraphicsScene):
-    def init(self, args):
-        super().__init__(args)
+    def __init__(self, *args):
+        super().__init__(*args)
     
     def mousePressEvent(self, event):
-        for pt in window.pts:
-            if abs(pt.coords[0] - event.scenePos().x()) < 10 and abs(pt.coords[1] - event.scenePos().y()) < 10:
-                print("Clicked on point at " + str(pt.coords) + " with load " + str(pt.load) + " and " + str(len(pt.links)) + " links")
-                return
-    
+        if event.button() == Qt.MouseButton.LeftButton:
+            onLeftClick(event)
+        elif event.button() == Qt.MouseButton.MiddleButton:
+            onMiddleClick(event)
+        elif event.button() == Qt.MouseButton.RightButton:
+            onRightClick(event)
 
 class MainWindow(QWidget):
-
     pts: list[GridPoint] = []
 
     def addDots(self, scene: QGraphicsScene):
-        for x in range(1,12):
-            for y in range(1,10):
-                xmod = x * 40 + randint(-10,10)
-                ymod = y * 40 + randint(-10,10)
+        for x in range(1, 12):
+            for y in range(1, 10):
+                xmod = x * 40 + randint(-10, 10)
+                ymod = y * 40 + randint(-10, 10)
                 scene.addEllipse(xmod, ymod, 10, 10)
-                pt = GridPoint()
-                pt.init((xmod, ymod))
+                pt = GridPoint((xmod, ymod))
                 self.pts.append(pt)
-                
     
     def resetScene(self, scene: QGraphicsScene):
         scene.clear()
@@ -70,7 +86,8 @@ class MainWindow(QWidget):
         self.addDots(scene)
 
     def releaseWave(self):
-        self.pts[randint(0, len(self.pts)-1)].addLoad(randint(100, 500))
+        # self.pts[randint(0, len(self.pts)-1)].addLoad(randint(100, 500), None) 
+        self.pts[0].addLoad(200)
 
     def __init__(self):
         super().__init__()
@@ -78,12 +95,7 @@ class MainWindow(QWidget):
         self.setFixedSize(800, 450)
 
         scene = ClickableScene(0, 0, 500, 420)
-
-        """
-        column width (125px)
-        row width (105px)
-        = grid size 750px * 420px
-        """
+        self.addDots(scene)
 
         view = QGraphicsView(scene)
 
@@ -104,9 +116,8 @@ class MainWindow(QWidget):
 
         stack_layout.addWidget(release_button)
         stack_layout.addWidget(reset_button)
-        stack_layout.addStretch() # top align widgets
+        stack_layout.addStretch()
 
 window = MainWindow()
 window.show()
-
 app.exec()
