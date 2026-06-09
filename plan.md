@@ -1,6 +1,6 @@
 on start
 
-generate dots (distributed evenly across scene)
+generate dots (distributed evenly across scene) -- done
 
 on wave release
 
