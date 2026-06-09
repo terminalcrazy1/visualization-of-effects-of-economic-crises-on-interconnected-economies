@@ -23,7 +23,7 @@ def onMiddleClick(event):
 def onRightClick(event):
     pass
 
-def onLeftClick(event, last_point):
+def onLeftClick(event, last_point, scene):
     if last_point != None:
         for pt in window.pts:
             if abs(pt.coords[0] - last_point[0]) < 10 and abs(pt.coords[1] - last_point[1]) < 10:
@@ -31,6 +31,7 @@ def onLeftClick(event, last_point):
                     if abs(pt2.coords[0] - event.scenePos().x()) < 10 and abs(pt2.coords[1] - event.scenePos().y()) < 10:
                         pt.addLink(pt2)
                         pt2.addLink(pt)
+                        scene.addLine(pt.coords[0]+5, pt.coords[1]+5, pt2.coords[0]+5, pt2.coords[1]+5)
                         print("Linked " + str(pt.coords) + " to " + str(pt2.coords))
                         last_point = None
                         break
@@ -41,19 +42,25 @@ def onLeftClick(event, last_point):
     return last_point
 
 class GridPoint():
-    def __init__(self, coords: tuple[int, int]):
+    def __init__(self, coords: tuple[int, int], visual):
         self.coords = coords
         self.load = 0
         self.links = []
+        self.visual = visual
 
-    def addLink(self, link: 'GridPoint'):
+    def addLink(self, link: GridPoint):
         self.links.append(link)
     
     def addLoad(self, load: int, previous = []):
-        self.load += load
+        ct = 0
         for link in self.links:
             if link not in previous:
                 link.addLoad(load * 0.15, previous + [self])
+                ct += 1
+        self.load += load * (1 - 0.15 * ct)
+        if self.load > 100:
+            self.visual.setBrush(Qt.GlobalColor.red)
+
 
 class ClickableScene(QGraphicsScene):
     def __init__(self, *args):
@@ -62,7 +69,7 @@ class ClickableScene(QGraphicsScene):
     
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self.last_point = onLeftClick(event, self.last_point)
+            self.last_point = onLeftClick(event, self.last_point, self)
         elif event.button() == Qt.MouseButton.MiddleButton:
             onMiddleClick(event)
         elif event.button() == Qt.MouseButton.RightButton:
@@ -76,8 +83,8 @@ class MainWindow(QWidget):
             for y in range(1, 10):
                 xmod = x * 40 + randint(-10, 10)
                 ymod = y * 40 + randint(-10, 10)
-                scene.addEllipse(xmod, ymod, 10, 10)
-                pt = GridPoint((xmod, ymod))
+                visual =scene.addEllipse(xmod, ymod, 10, 10)
+                pt = GridPoint((xmod, ymod), visual)
                 self.pts.append(pt)
     
     def resetScene(self, scene: QGraphicsScene):
