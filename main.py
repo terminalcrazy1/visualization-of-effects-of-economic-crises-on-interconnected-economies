@@ -3,10 +3,9 @@ from random import randint
 from PyQt6.QtWidgets import (
     QApplication, QGraphicsScene, QGraphicsView, QGridLayout,
     QVBoxLayout, QPushButton, QLabel, QWidget, QGraphicsEllipseItem,
-    QGraphicsLineItem
+    QGraphicsLineItem, QGraphicsSceneMouseEvent
 )
 from PyQt6.QtGui import QMouseEvent
-from PyQt6.QtWidgets import QGraphicsSceneMouseEvent
 from PyQt6.QtCore import Qt
 
 class GridPoint:
