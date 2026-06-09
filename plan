@@ -5,7 +5,7 @@ generate dots (distributed evenly across scene) -- done
 on wave release
 
 r add force to impact dot -- done
-r remove force from impact dot = to # of connections * reducer ratio
+r remove force from impact dot = to # of connections * reducer ratio -- done
 r add force = to reducer ratio of impact to each connected dot -- done
 r propagate -- done
 
@@ -13,9 +13,8 @@ c turn overloaded dots red -- done
 
 ui
 
-c wave strength slider
-r release wave button
-r reset button
+r release wave button -- done
+r reset button -- done
 
 r clicking two dots creates a link between them -- done
 r middle click gives info on dot clicked -- done
