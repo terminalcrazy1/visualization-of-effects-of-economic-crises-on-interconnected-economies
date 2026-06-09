@@ -24,7 +24,10 @@ class GridPoint:
                 self.previous.append(link)
                 link.addLoad(load * 0.15)
                 ct += 1
-        self.load += load * (1 - 0.15 * ct)
+        if ct >= 6:
+            self.load += load * 0.1
+        else:
+            self.load += load * (1 - (0.15 * ct))
         if self.load >= 100:
             self.load = 100
             for link in self.links:
