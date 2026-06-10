@@ -2,10 +2,10 @@ from ClickableScene import ClickableScene
 from GridPoint import GridPoint
 from PyQt6.QtWidgets import (
     QGraphicsView, QGridLayout, QVBoxLayout,
-    QPushButton, QLabel, QWidget
+    QLabel, QPushButton, QWidget
 )
-from typing import List
 from random import randint
+from typing import List
 
 class MainWindow(QWidget):
     def __init__(self) -> None:

@@ -1,6 +1,6 @@
-from typing import List, Optional
-from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsLineItem
 from MainWindow import MainWindow
+from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsLineItem
+from typing import List, Optional
 
 class GridPoint:
     previous: List['GridPoint'] = []

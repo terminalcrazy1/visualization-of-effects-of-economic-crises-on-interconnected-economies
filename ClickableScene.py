@@ -1,8 +1,8 @@
-from typing import Any, Optional
-from PyQt6.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent
-from PyQt6.QtCore import Qt
-from MainWindow import MainWindow
 from GridPoint import GridPoint
+from MainWindow import MainWindow
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent
+from typing import Any, Optional
 
 class ClickableScene(QGraphicsScene):
     def __init__(self, parent_window: 'MainWindow', *args: Any) -> None:
