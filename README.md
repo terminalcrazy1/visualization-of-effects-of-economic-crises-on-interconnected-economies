@@ -13,4 +13,5 @@ Networks fall together in the application, as in real life. A couple of examples
 - South Asian Financial Crisis
 - Russian Financial Crisis
 - 2008 Financial Crisis
+
 All of these crises started in a segment of the global network, and expanded to encompass the majority of it. For example, the SA Financial Crisis caused the Russian Financial Crisis, and the Great Depression was caused by a local American depression, that expanded to encompass much of the developed world.
