@@ -1,6 +1,8 @@
-from MainWindow import MainWindow
 from PyQt6.QtWidgets import QGraphicsEllipseItem, QGraphicsLineItem
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from MainWindow import MainWindow
 
 class GridPoint:
     previous: List['GridPoint'] = []

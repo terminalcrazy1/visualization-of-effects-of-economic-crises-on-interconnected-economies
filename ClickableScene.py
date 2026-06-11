@@ -1,16 +1,18 @@
-from GridPoint import GridPoint
-from MainWindow import MainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QGraphicsScene, QGraphicsSceneMouseEvent
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from GridPoint import GridPoint
+    from MainWindow import MainWindow
 
 class ClickableScene(QGraphicsScene):
     def __init__(self, parent_window: 'MainWindow', *args: Any) -> None:
         super().__init__(*args)
         self.window: 'MainWindow' = parent_window
-        self.last_point: Optional[GridPoint] = None
+        self.last_point: Optional['GridPoint'] = None
     
-    def get_pt_at(self, event: QGraphicsSceneMouseEvent) -> Optional[GridPoint]:
+    def get_pt_at(self, event: QGraphicsSceneMouseEvent) -> Optional['GridPoint']:
         pos = event.scenePos()
         for pt in self.window.pts:
             if abs(pt.coords[0] - pos.x()) < 10 and abs(pt.coords[1] - pos.y()) < 10:
