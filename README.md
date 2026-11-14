@@ -1,3 +1,4 @@
+This is a school project that is now complete. NO MAINTENANCE!
 *William Morison*
 ## Table of Contents
 1. [About](#About)
